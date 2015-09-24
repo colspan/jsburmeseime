@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+      <title>Burmese Web IME</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/style.css" media="all">
+      <link rel="stylesheet" href="css/style.css" media="all">
+      <link rel="stylesheet" href="css/standalone.css" media="all">
+      <script src="lib/jquery-1.7.1.js"></script>
+      <script src="lib/d3.v3.min.js"></script>
+      <style>
+        #burmese_box{
+          font-size:20pt;
+          width:100%;
+          height:300px;
+        }
+        footer{
+          text-align:center;
+        }
+      </style>
+  </head>
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="http://labo.colspan.net/">Labo</a> <a class="brand" href="http://colspan.github.io/jsburmeseime/">Burmese Web IME</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="hero-unit">
+      <h1>Burmese Web IME</h1>
+      <p>မြန်မာဘာသာ; </p>
+
+      <form>
+        <textarea id="burmese_box"></textarea>
+      </form>
+      <script src="js/jsim_common.js"></script>
+      <script src="js/jsim_keycode.js"></script>
+      <script src="js/jsim_caret.js"></script>
+      <script src="js/jsim.js"></script>
+      <script src="js/jsim_burmese.js"></script>
+
+      <!--a class="btn btn-primary btn-large" href="#">Send Feedback</a-->
+    </div>
+
+    <!-- animated burmese convertion window -->
+    <script>
+      var lastElement = null;
+      var bufferViewerHeight = 100, bufferViewerWidth = 500;
+      var svg = d3.select('.hero-unit').append("svg")
+      .attr("height",bufferViewerHeight)
+      .attr("width",bufferViewerWidth);
+
+      var bufferViewerUpdate = function ( text ){
+        if( lastElement != null ){ /* バッファ退場 */
+          lastElement.transition()
+          .attr('y',bufferViewerHeight*1.5)
+          .remove();
+          lastElement = null;
+        }
+        /* バッファ登場 */
+        var element = svg.append('text')
+        .attr('font-size',"30pt")
+        .attr('x',200)
+        .attr('y',0);
+
+        element.text(JSIM_Common.stripTags(text))
+        element.transition().duration(500)
+        .attr('y', bufferViewerHeight/2);
+
+        lastElement = element;
+
+      }
+      </script>
+      <!-- execute javascript ime -->
+      <script>
+        burmeseObj = new JSIM( document.getElementById( 'burmese_box' ), JSIM_Burmese );
+      </script>
+
+
+
+    <footer>
+      <p>&copy; <a href="http://flavors.me/colspan">Miyoshi.K</a> 2015.</p>
+    </footer>
+
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+
+  </body>
+</html>
